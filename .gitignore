@@ -1,0 +1,25 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# Build output
+/out/
+build/
+target/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# OS Specific
+ehthumbs.db
+Icon?
+desktop.ini
+
+# Dependency directories (optional, kalau pakai maven/gradle/npm)
+node_modules/
+vendor/
