@@ -14,6 +14,7 @@ type CreditLimit interface {
 	FindByCondition(ctx context.Context, query model.CreditLimit) (res model.CreditLimit, err error)
 	SaveAll(ctx context.Context, inputModels []model.CreditLimit) (err error)
 	DeleteByCustomerId(ctx context.Context, customerId int64) (err error)
+	Update(ctx context.Context, inputModel *model.CreditLimit) (err error)
 }
 
 type creditLimit struct {
@@ -48,8 +49,21 @@ func (repo creditLimit) FindById(ctx context.Context, id int64) (res model.Credi
 }
 
 func (repo creditLimit) FindByCondition(ctx context.Context, query model.CreditLimit) (res model.CreditLimit, err error) {
-	//TODO implement me
-	panic("implement me")
+	tx, isTransaction := GetDBWithStatus(ctx)
+	stmt := tx.Model(&model.CreditLimit{})
+
+	if isTransaction {
+		stmt = stmt.Clauses(clause.Locking{
+			Strength: "UPDATE",
+			Options:  "NOWAIT",
+		})
+	}
+
+	err = stmt.Where(&query).Take(&res).Error
+	if err != nil {
+		return
+	}
+	return
 }
 
 func (repo creditLimit) SaveAll(ctx context.Context, inputModels []model.CreditLimit) (err error) {
@@ -63,4 +77,9 @@ func (repo creditLimit) DeleteByCustomerId(ctx context.Context, customerId int64
 	return tx.Model(&model.CreditLimit{}).
 		Where(&model.CreditLimit{CustomerId: customerId}).
 		Delete(&model.CreditLimit{}).Error
+}
+
+func (repo creditLimit) Update(ctx context.Context, inputModel *model.CreditLimit) (err error) {
+	tx := GetDB(ctx)
+	return tx.Save(inputModel).Error
 }

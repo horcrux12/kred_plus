@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"errors"
+	"gorm.io/gorm"
 	"kredi-plus.com/be/app"
 	"kredi-plus.com/be/lib/constanta"
 	"kredi-plus.com/be/lib/exception"
@@ -43,4 +45,11 @@ func mergedOrNot[T comparable](existing, requested T) T {
 	} else {
 		return existing
 	}
+}
+
+func checkErrorGormNotFound(err error, field string) error {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return exception.NotFoundError(field)
+	}
+	return err
 }

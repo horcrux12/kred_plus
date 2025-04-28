@@ -25,6 +25,7 @@ func AppRouter() {
 	UserRoute(privateHandler, publicHandler)
 	CustomerRoute(privateHandler, publicHandler)
 	InterestSetting(privateHandler, publicHandler)
+	TransactionLoanRoute(privateHandler, publicHandler)
 
 	// health
 	publicHandler.HandleFunc("/health", func(writer http.ResponseWriter, request *http.Request) {
