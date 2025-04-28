@@ -1,0 +1,26 @@
+version: '3.0'
+services:
+  db:
+    image: mysql:8.0
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: secretpass
+      MYSQL_DATABASE: kredi_plus
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secretuser
+    ports:
+      - "3309:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+#  app:
+#    build: .
+#    container_name: my-golang-app
+#    ports:
+#      - "8910:8080"
+#    depends_on:
+#      - db
+    # Mount folder uploads supaya file tetap persist
+
+#volumes:
+#  db-data:
