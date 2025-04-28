@@ -12,15 +12,20 @@ services:
       - "3309:3306"
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
 
-#  app:
-#    build: .
-#    container_name: my-golang-app
-#    ports:
-#      - "8910:8080"
-#    depends_on:
-#      - db
-    # Mount folder uploads supaya file tetap persist
+  app:
+    build: .
+    container_name: my-golang-app
+    ports:
+      - "8910:8080"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: on-failure
 
-#volumes:
-#  db-data:
+networks:
+  app-network:
+    driver: bridge
