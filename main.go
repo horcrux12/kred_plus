@@ -5,6 +5,7 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 	"kredi-plus.com/be/app"
 	"kredi-plus.com/be/config"
+	"kredi-plus.com/be/router"
 	"log"
 )
 
@@ -12,6 +13,7 @@ func main() {
 	config.GenerateConfiguration()
 	app.InitApplicationAttribute()
 	DBMigration()
+	router.AppRouter()
 }
 
 func DBMigration() {
